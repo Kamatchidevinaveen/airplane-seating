@@ -1,0 +1,91 @@
+package airplaneSeating;
+
+import java.util.*;  
+
+public class AirplaneSeating {
+
+	public static void main(String[] args) {
+		  int noOfSeat, totalRows, totalColumns, totalNoOfSection, tempColumns =0; 
+		    Scanner sc=new Scanner(System.in);  
+		    System.out.println("Enter the number of seats: ");  
+		    //reading the number of elements from the that we want to enter  
+		     noOfSeat=sc.nextInt(); 
+		     System.out.println("Enter the number of rows: ");  
+		     totalRows = sc.nextInt();
+		     System.out.println("Enter the number of Columns: ");  
+		     totalColumns = sc.nextInt();
+		     System.out.println("Enter the toal number of section: ");  
+		     totalNoOfSection = sc.nextInt();
+		    int[][] seatSection = new int [2][2];
+		     String[][] seatArray = new String[totalRows][totalColumns];
+		     int[][] seatResult = new int[totalRows][totalColumns];
+		     int count = 1;
+		    
+		     
+		     // Getting aisle seats information
+		     for (int i = 1; i <= totalNoOfSection; i++ ) {
+		         int sectionRows, sectionColumns;
+		          System.out.println("Enter section row index and column index: ");
+		         sectionRows = sc.nextInt();
+		         sectionColumns = sc.nextInt();
+		         assignSeating(totalNoOfSection, i, sectionRows, sectionColumns, totalRows, totalColumns, seatArray, tempColumns);
+		        tempColumns = tempColumns + sectionColumns ;
+		     }
+		     
+		   
+		   System.out.println("Seat details: ");
+		     for(int i=0; i<totalRows; i++) {
+		         for (int j=0; j< totalColumns; j++) {
+		             System.out.print(seatArray[i][j] + " " );
+		         }
+		        System.out.println();   
+		     }
+		     
+		     count = assigningPassengers("Aisle", totalRows, totalColumns, count, noOfSeat,seatResult, seatArray);
+		    count =  assigningPassengers("Window", totalRows, totalColumns, count, noOfSeat, seatResult, seatArray);
+		    count = assigningPassengers("Middle", totalRows, totalColumns, count, noOfSeat, seatResult, seatArray);
+		     
+		     System.out.println("Assigning passengers to seats: ");
+		       for(int i=0; i<totalRows; i++) {
+		         for (int j=0; j< totalColumns; j++) {
+		             System.out.print(seatResult[i][j] + " " );
+		         }
+		        System.out.println();   
+		     }
+		     
+		    
+		    }
+		    
+		     static int assigningPassengers(String seatName, int totalRows, int totalColumns, int count, int noOfSeat, int[][] seatResult, String[][] seatArray) {
+		        for(int i=0; i<totalRows; i++) {
+		         for (int j=0; j< totalColumns; j++) {
+		             if (seatArray[i][j] == seatName && count <= noOfSeat) {
+		                 seatResult[i][j] = count;
+		                 count++;
+		             }
+		         }
+		     }
+		     return count;
+		     }
+		 
+		    
+		     static void assignSeating( int totalSectionCount, int sectionCount, int noOfSectionRows,
+		     int noOfSectionColumns, int totalRows, int totalColumns, String[][] seatArray, int startColumn) {
+		         int endColumn = startColumn + noOfSectionColumns;
+		       for(int i=0; i<noOfSectionRows; i++) {
+		         for (int j= startColumn ; j< endColumn; j++) {
+		             if ( sectionCount == 1 && j == 0) {
+		                 seatArray[i][j] = "Window";
+		             } else if (sectionCount == totalSectionCount && j == (endColumn - 1) && j == (totalColumns - 1)  ) {
+		                 seatArray[i][j] = "Window";
+		             } else if (j == startColumn ||  j == (endColumn - 1) ) {
+		                 seatArray[i][j] = "Aisle";
+		             } else {
+		              seatArray[i][j] = "Middle";  
+		             }
+		         }
+		     }
+
+	}
+
+}
